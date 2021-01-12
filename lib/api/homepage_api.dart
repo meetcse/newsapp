@@ -5,6 +5,7 @@ import 'package:news_app/secret.dart';
 
 class HomePageApi {
   var _apiServices = ApiServices.apiServices;
+  //TODO: ADD PAGESIZE AND PAGE TO URL
   String url =
       "https://newsapi.org/v2/top-headlines?country=in&sortBy=publishedAt&language=en&apiKey=${apiKey}";
 

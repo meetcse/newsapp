@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:news_app/api/homepage_api.dart';
 import 'package:news_app/constants/strings.dart';
 import 'package:news_app/models/news_model.dart';
+import 'package:news_app/screens/search_screen.dart';
 import 'package:news_app/widgets/appbar.dart';
 import 'package:news_app/widgets/news_card.dart';
 
@@ -34,27 +35,24 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(title: Strings.news, actions: [
-        //Search in news feed
-        GestureDetector(
-            onTap: () {
-              //TODO:
-            },
-            child: Icon(CupertinoIcons.search)),
-        SizedBox(
-          width: 8,
-        ),
-        // Apply filters
-        GestureDetector(
-            onTap: () {
-              //TODO:
-            },
-            child: Icon(CupertinoIcons.slider_horizontal_3)),
-
-        SizedBox(
-          width: 8,
-        ),
-      ]),
+      appBar: MyAppBar(
+        title: Strings.news,
+        actions: [
+          //Search in news feed
+          GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) {
+                    return SearchScreen();
+                  }),
+                );
+              },
+              child: Icon(CupertinoIcons.search)),
+          SizedBox(
+            width: 8,
+          ),
+        ],
+      ),
       body: SafeArea(
         child: FutureBuilder(
             future: _getNews,
