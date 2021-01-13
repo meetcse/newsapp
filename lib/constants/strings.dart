@@ -14,4 +14,5 @@ class Strings {
   static const String error = "Error";
   static const String success = "Success";
   static const String somethingWentWrong = "OOPS! Something Went Wrong";
+  static const String noResultFound = "No Results found";
 }

@@ -16,7 +16,6 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  String _searchKeyword;
   String _country;
   String _category;
   String _language;
@@ -30,6 +29,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   int _totalResults;
   bool _isEnd = false;
+  TextEditingController _searchController = TextEditingController();
 
   ScrollController _scrollController = ScrollController();
 
@@ -121,7 +121,7 @@ class _SearchScreenState extends State<SearchScreen> {
     SearchFilterApi _searchApi = SearchFilterApi();
 
     NewsModel _res = await _searchApi
-        .getSearchAndFilterNews(_searchKeyword, page,
+        .getSearchAndFilterNews(_searchController.text, page,
             category: _category, country: _country, language: _language)
         .catchError((error) {
       print("ERROR : " + error.toString());
@@ -497,62 +497,81 @@ class _SearchScreenState extends State<SearchScreen> {
                         ],
                       ),
                     )
-                  : !newsModel.hasData || _showNewsList.isEmpty
+                  : !newsModel.hasData
                       ? Center(
                           child: CustomProgressIndicator(),
                         )
-                      : LiquidPullToRefresh(
-                          backgroundColor: Colors.white,
-                          color: Theme.of(context).primaryColor,
-                          showChildOpacityTransition: false,
-                          animSpeedFactor: 2,
-                          height: 50,
-                          onRefresh: () async {
-                            _showNewsList.clear();
-                            setState(() {});
-                            _getNews = _getSearchNews(1);
-                          },
-                          child: Container(
-                            color: Colors.grey[50],
-                            child: SingleChildScrollView(
-                              controller: _scrollController,
-                              physics: BouncingScrollPhysics(
-                                  parent: AlwaysScrollableScrollPhysics()),
+                      : newsModel.data.totalResults == 0
+                          ? Center(
                               child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Container(
-                                    margin: const EdgeInsets.all(12),
-                                    child: TextField(
-                                      onSubmitted: (value) {
-                                        _searchKeyword = value;
-                                        _showNewsList.clear();
-                                        setState(() {});
-                                        _getNews = _getSearchNews(1);
-                                      },
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(28),
-                                        ),
-                                        prefixIcon: Icon(CupertinoIcons.search),
-                                        hintText: Strings.search,
-                                        hintStyle: Theme.of(context)
-                                            .textTheme
-                                            .subtitle1,
-                                      ),
-                                    ),
+                                  Icon(CupertinoIcons.search, size: 80),
+                                  SizedBox(
+                                    height: 12,
                                   ),
-                                  Flexible(
-                                      fit: FlexFit.loose,
-                                      child: _buildNewsList()),
+                                  Text(Strings.noResultFound,
+                                      style:
+                                          Theme.of(context).textTheme.bodyText1)
                                 ],
                               ),
-                            ),
-                          ),
-                        );
+                            )
+                          : _showNewsList.isEmpty
+                              ? Center(
+                                  child: CustomProgressIndicator(),
+                                )
+                              : _buildChildWidget();
             }),
+      ),
+    );
+  }
+
+  Widget _buildChildWidget() {
+    return LiquidPullToRefresh(
+      backgroundColor: Colors.white,
+      color: Theme.of(context).primaryColor,
+      showChildOpacityTransition: false,
+      animSpeedFactor: 2,
+      height: 50,
+      onRefresh: () async {
+        _showNewsList.clear();
+        setState(() {});
+        _getNews = _getSearchNews(1);
+      },
+      child: Container(
+        color: Colors.grey[50],
+        child: SingleChildScrollView(
+          controller: _scrollController,
+          physics:
+              BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                margin: const EdgeInsets.all(12),
+                child: TextField(
+                  controller: _searchController,
+                  onSubmitted: (value) {
+                    // _searchKeyword = value;
+                    _showNewsList.clear();
+                    setState(() {});
+                    _getNews = _getSearchNews(1);
+                  },
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(28),
+                    ),
+                    prefixIcon: Icon(CupertinoIcons.search),
+                    hintText: Strings.search,
+                    hintStyle: Theme.of(context).textTheme.subtitle1,
+                  ),
+                ),
+              ),
+              Flexible(fit: FlexFit.loose, child: _buildNewsList()),
+            ],
+          ),
+        ),
       ),
     );
   }
