@@ -15,14 +15,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter News',
       theme: ThemeData(
-        primaryColor: Colors.deepPurpleAccent[400],
-        buttonColor: Colors.deepPurpleAccent[700],
+        primaryColor: Color(0xff3500d3),
+        buttonColor: Color(0xff3500d3),
         textTheme:
             GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme).copyWith(
           headline1: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
-            color: Colors.deepPurpleAccent[700],
+            color: Color(0xff3500d3),
           ),
           headline2: TextStyle(
             fontSize: 18,
