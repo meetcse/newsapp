@@ -10,19 +10,19 @@ class SearchFilterApi {
       {String country, String category, String language}) async {
     NewsModel _newsModel;
     String url;
-    //TODO: ADD PAGESIZE AND PAGE TO URL
+
     country ??= "in";
     category ??= "business";
     language ??= "en";
 
     if (search == null) {
       url =
-          "https://newsapi.org/v2/top-headlines?country=$country&language=${language}&category=$category&apiKey=${apiKey}";
+          "https://newsapi.org/v2/top-headlines?country=$country&language=${language}&pageSize=10&page=${page.toInt()}&category=$category&apiKey=${apiKey}";
       print("URL IS : " + url);
       print("URL IS : " + country);
     } else {
       url =
-          "https://newsapi.org/v2/top-headlines?q=${search}&country=${country}&language=${language}&category=${category}&apiKey=${apiKey}";
+          "https://newsapi.org/v2/top-headlines?q=${search}&country=${country}&language=${language}&pageSize=10&page=${page.toInt()}&category=${category}&apiKey=${apiKey}";
     }
 
     try {

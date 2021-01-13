@@ -28,7 +28,7 @@ class ApiServices {
     Response res = await dio.get(url).catchError((error) {
       errorMessage = DioErrorUtil.handleError(error);
       print("ERROR in API RES : " + errorMessage);
-      throw error;
+      throw errorMessage;
     });
     return res.data;
   }

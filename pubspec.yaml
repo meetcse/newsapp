@@ -30,6 +30,10 @@ dependencies:
   cached_network_image: ^2.5.0
   dio: ^3.0.10
   webview_flutter: ^0.3.19+9
+  google_fonts: ^1.1.1
+  flushbar: ^1.10.4
+  liquid_pull_to_refresh: ^2.0.0
+  flutter_spinkit: ^4.1.2+1
 
 dev_dependencies:
   flutter_test:

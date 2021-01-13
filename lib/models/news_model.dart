@@ -3,6 +3,7 @@ import 'package:news_app/models/news_error_model.dart';
 class NewsModel {
   String status;
   List<Article> articles;
+  int totalResults;
   bool isError;
   NewsErrorModel errorModel;
 
@@ -11,6 +12,7 @@ class NewsModel {
 
     if (status == "ok" && json['articles'] != null) {
       isError = false;
+      this.totalResults = json['totalResults'];
       List<dynamic> _articles = json["articles"];
       this.articles = _articles.map((element) {
         return Article.fromMap(element);

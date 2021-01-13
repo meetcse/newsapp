@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:news_app/constants/strings.dart';
 import 'package:news_app/widgets/appbar.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class DetailNewsScreen extends StatefulWidget {
   final String postUrl;
-  DetailNewsScreen({@required this.postUrl});
+  final String title;
+  DetailNewsScreen({@required this.postUrl, @required this.title});
 
   @override
   _DetailNewsScreen createState() => _DetailNewsScreen();
@@ -19,7 +19,7 @@ class _DetailNewsScreen extends State<DetailNewsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(title: Strings.news),
+      appBar: AppBarWidget.myAppBar(context, title: widget.title),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
